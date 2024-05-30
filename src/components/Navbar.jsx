@@ -36,10 +36,8 @@ const Navbar = ({ isAuthenticated, setAuthentication }) => {
           <img src={logo} alt="logo" className="w-full md:static relative" />
         </NavLink>
         {/* Menu icon */}
-        <div
-          className="absolute right-20 top-6 cursor-pointer md:hidden"
-        >
-          <ThemeSwitcher/>
+        <div className="absolute right-20 top-6 cursor-pointer md:hidden">
+          <ThemeSwitcher />
         </div>
         <div
           onClick={() => setOpen(!open)}
@@ -55,12 +53,12 @@ const Navbar = ({ isAuthenticated, setAuthentication }) => {
             open ? "top-12" : "top-[-490px]"
           }`}
         >
-          <div
+          <li
             onClick={() => setDark(!dark)}
-            className="cursor-pointer hidden sm:block"
+            className="md:ml-8 md:my-0 my-5 font-bold cursor-pointer hidden md:block"
           >
-            <ThemeSwitcher/>
-          </div>
+            <ThemeSwitcher />
+          </li>
           <li className="md:ml-8 md:my-0 my-5 font-bold cursor-pointer">
             <NavLink
               to="/about"
