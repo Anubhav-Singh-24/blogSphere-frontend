@@ -4,7 +4,7 @@ import pgErImg from '../assets/pgErr.png'
 
 const PageNotFound = () => {
   return (
-    <div className="lg:mt-32 mt-20 pb-20 px-20 flex flex-col justify-center items-center w-full h-full mx-auto">
+    <div className="lg:mt-32 mt-20 pb-20 px-20 flex flex-col justify-center items-center w-full h-full mx-auto dark:bg-[rgba(8,10,21,1)]">
       <div className="w-full flex items-center justify-center">
         <img src={pgErImg} alt="404" className="lg:w-[30%] w-full" />
       </div>
