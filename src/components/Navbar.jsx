@@ -10,7 +10,7 @@ import ThemeSwitcher from "./ThemeSwitcher";
 const Navbar = ({ isAuthenticated, setAuthentication }) => {
   const [open, setOpen] = useState(false);
   const { name, setName, setUserName } = useContext(DataContext);
-  const [dark,setDark] = useState(false)
+  const [dark, setDark] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ const Navbar = ({ isAuthenticated, setAuthentication }) => {
       autoClose: 2000,
       position: "top-center",
     });
-    navigate('/login')
+    navigate("/login");
   };
 
   return (
