@@ -19,6 +19,7 @@ const Editor = () => {
   const [image,setImage] = useState(null)
   const [preview, setPreview] = useState(false);
   const [editorData,setEditorData] = useState('');
+  const [publish,setPublish] = useState(false)
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -94,6 +95,7 @@ const Editor = () => {
 
   const publishPost = async()=>{
     try {
+      setPublish(true)
       post.publishDate = new Date();
       post.username = username
       post.name = name
@@ -105,6 +107,7 @@ const Editor = () => {
           autoClose:2000,
           position:"top-center"
         })
+        setPublish(false)
         navigate('/myposts')
       }
     } catch (error) {
@@ -187,8 +190,8 @@ const Editor = () => {
           <button onClick={cancelPost} className="text-white bg-[#7c4ee4] px-4 py-2 border-[#7c4ee4] border-2 border-solid rounded-lg text-md font-bold hover:bg-white hover:text-red-400 duration-500 ease-in-out">
             Cancel
           </button>
-          <button onClick={publishPost} className="text-white bg-[#7c4ee4] px-4 py-2 border-[#7c4ee4] border-2 border-solid text-md font-bold rounded-lg hover:bg-white hover:text-[#7c4ee4] duration-300 ease-in-out">
-            Post
+          <button onClick={publishPost} disabled={publish} className="text-white bg-[#7c4ee4] px-4 py-2 border-[#7c4ee4] border-2 border-solid text-md font-bold rounded-lg hover:bg-white hover:text-[#7c4ee4] duration-300 ease-in-out">
+            {publish ? 'Posting...' : 'Post'}
           </button>
         </div>
         <div className="flex w-full justify-center items-center">

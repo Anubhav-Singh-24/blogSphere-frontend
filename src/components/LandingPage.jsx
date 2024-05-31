@@ -7,6 +7,7 @@ import { truncateHTML } from "../utils/common-utils";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import Posts from "./Posts";
+import blogImg from "../assets/blog.jpg";
 
 const LandingPage = () => {
   const [posts, setPosts] = useState([]);
@@ -49,7 +50,7 @@ const LandingPage = () => {
           <div className="flex lg:flex-row flex-col lg:justify-start gap-5 items-center bg-[#7c4ee4] p-10 text-white w-full rounded-tl-[150px] rounded-br-[150px]">
             <div className="max-w-lg w-full flex justify-center items-center ml-10">
               <img
-                src={posts[ind].picture}
+                src={posts[ind].picture || blogImg}
                 alt={posts[ind].title}
                 className="rounded-lg w-full"
               />
@@ -83,7 +84,7 @@ const LandingPage = () => {
             <div className="flex lg:flex-row flex-col justify-start items-center w-full gap-5">
               <div className="lg:max-w-2xl max-w-lg w-full flex justify-center items-center ">
                 <img
-                  src={posts[posts.length - 1].picture}
+                  src={posts[posts.length - 1].picture || blogImg}
                   alt={posts[posts.length - 1].title}
                   className="rounded-lg w-full"
                 />

@@ -14,6 +14,7 @@ const Update = () => {
   const [preview, setPreview] = useState(false);
   const [editorData, setEditorData] = useState("");
   const quillRef = useRef(null)
+  const [publish, setPublish] = useState(false);
 
   const { id } = useParams();
 
@@ -116,6 +117,7 @@ const Update = () => {
 
   const updatePostById = async () => {
     try {
+      setPublish(true);
       post.content = editorData;
       let response = await API.updatePost(post);
       if (response.isSuccess) {
@@ -124,6 +126,7 @@ const Update = () => {
           position: "top-center",
         });
       }
+      setPublish(false);
       navigate(`/detail/${id}`);
     } catch (error) {
       error.then((innerError) => {
@@ -230,9 +233,10 @@ const Update = () => {
           </button>
           <button
             onClick={updatePostById}
+            disabled={publish}
             className="text-white bg-[#7c4ee4] px-4 py-2 border-[#7c4ee4] border-2 border-solid text-md font-bold rounded-lg hover:bg-white hover:text-[#7c4ee4] duration-300 ease-in-out"
           >
-            Update
+            {publish ? "Updating..." : "Update"}
           </button>
         </div>
         <div className="flex w-full justify-center items-center">

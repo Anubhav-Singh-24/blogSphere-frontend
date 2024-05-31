@@ -18,6 +18,7 @@ const Login = ({setAuthentication}) => {
   const { setUserName, setName } = useContext(DataContext);
   const [toggle, setToggle] = useState(false);
   const [login, setLogin] = useState(initalValues);
+  const [load,setLoad] = useState(false)
 
   const handleChange = (e) => {
     setLogin({ ...login, [e.target.name]: e.target.value });
@@ -26,6 +27,7 @@ const Login = ({setAuthentication}) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoad(true)
       const response = await API.userLogin(login);
       if (response.isSuccess) {
         toast.success(`Welcome back ${response.data.name}!!`, {
@@ -39,6 +41,7 @@ const Login = ({setAuthentication}) => {
         setName(response.data.name);
         setUserName(response.data.username);
         setAuthentication(true)
+        setLoad(false)
         navigate('/myposts')
       }
       setLogin(initalValues);
@@ -101,10 +104,11 @@ const Login = ({setAuthentication}) => {
             </div>
             <div className="flex items-center justify-center ml-5">
               <button
+              disabled={load}
                 type="submit"
                 className="w-full bg-[#7c4ee4] hover:bg-[#5c3bab] transition duration-300 ease-in-out text-white font-bold text-md px-4 py-3 rounded-lg"
               >
-                Login
+                {load?'Logging In...':'Login'}
               </button>
             </div>
           </form>

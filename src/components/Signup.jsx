@@ -15,6 +15,7 @@ const Signup = () => {
     password: "",
   };
   const [signup, setSignup] = useState(initalValues);
+  const [load,setLoad] = useState(false)
 
   const handleChange = (e) => {
     setSignup({ ...signup, [e.target.name]: e.target.value });
@@ -25,6 +26,7 @@ const Signup = () => {
   const handleSubmit = async(e)=>{
     e.preventDefault();
     try {
+      setLoad(true)
       const response = await API.userSignup(signup);
       if (response.isSuccess) {
         toast.success(response.data.msg, {
@@ -32,6 +34,7 @@ const Signup = () => {
           position: "top-center",
         });
         setSignup(initalValues);
+        setLoad(false)
         navigate('/login')
       }
     } catch (error) {
@@ -106,9 +109,10 @@ const Signup = () => {
             <div className="flex items-center justify-center ml-5">
               <button
                 type="submit"
+                disabled={load}
                 className="w-full bg-[#7c4ee4] hover:bg-[#5c3bab] transition duration-300 ease-in-out text-white font-bold text-md px-4 py-3 rounded-lg"
               >
-                Signup
+                {load ? 'Signing Up...':'Signup'}
               </button>
             </div>
           </form>

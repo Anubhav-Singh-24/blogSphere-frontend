@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import { API } from "../service/api";
 import { toast } from "react-toastify";
 import { useNavigate } from 'react-router-dom';
@@ -13,10 +13,13 @@ const DeleteConf = ({onClose,id}) => {
         }
     }
 
+    const [del,setDelete] = useState(false)
+
     let navigate = useNavigate();
 
     const deleteBlogPost = async () => {
       try {
+        setDelete(true)
         const response = await API.deletePost(id);
         if (response.isSuccess) {
           toast.success(response.data.msg, {
@@ -25,6 +28,7 @@ const DeleteConf = ({onClose,id}) => {
           });
         }
         onClose();
+        setDelete(false)
         navigate('/myposts')
       } catch (error) {
         error.then((innerError) => {
@@ -50,8 +54,9 @@ const DeleteConf = ({onClose,id}) => {
           <button
             className="px-4 py-2 bg-white text-[#7c4ee4] duration-300 ease-in-out hover:text-red-600 rounded"
             onClick={deleteBlogPost}
+            disabled={del}
           >
-            Delete
+            {del?'Deleting....':'Delete'}
           </button>
         </div>
       </div>

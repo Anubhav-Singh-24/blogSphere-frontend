@@ -8,7 +8,7 @@ export const ThemeContext = createContext({
 
 const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    return localStorage.getItem('theme')
+     return localStorage.getItem("theme") || "light";
   });
 
   const darkMode = () => {
