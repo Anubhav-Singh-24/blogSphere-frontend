@@ -61,7 +61,7 @@ const DetailedView = ({ isAuthenticated }) => {
         });
       } 
     };
-    if (!post.length === 0) {
+    if (post.length !== 0) {
       updateViewsById();
     }
     // eslint-disable-next-line
