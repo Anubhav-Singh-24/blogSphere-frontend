@@ -20,6 +20,7 @@ const Comments = ({ post, isAuthenticated }) => {
   const [comment, setComment] = useState(initial);
   const [toggle, setToggle] = useState(false);
   const [comments, setComments] = useState([]);
+  const [load,setLoad] = useState(false)
   let navigate = useNavigate();
 
   const handleCommentData = (e) => {
@@ -56,17 +57,21 @@ const Comments = ({ post, isAuthenticated }) => {
 
   const addComment = async () => {
     if (isAuthenticated) {
-      try {
-        await API.newComment(comment);
-        setComment(initial);
-        setToggle((prev) => !prev);
-      } catch (error) {
-        error.then((innerError) => {
-          toast.error(innerError.msg, {
-            autoClose: 2000,
-            position: "top-center",
+      if(comment.comments){
+        try {
+          setLoad(true);
+          await API.newComment(comment);
+          setComment(initial);
+          setToggle((prev) => !prev);
+          setLoad(false);
+        } catch (error) {
+          error.then((innerError) => {
+            toast.error(innerError.msg, {
+              autoClose: 2000,
+              position: "top-center",
+            });
           });
-        });
+        }
       }
     } else {
       toast.warning("You need to Login first", {
@@ -91,10 +96,9 @@ const Comments = ({ post, isAuthenticated }) => {
             value={comment.comments}
             className="p-3 rounded-full xl:w-[50%] w-full focus:outline-none border-2 border-solid border-[#7c4ee4]"
           ></textarea>
-          <IoMdSend
-            className="text-2xl text-[#7c4ee4] cursor-pointer"
-            onClick={addComment}
-          />
+          <button onClick={addComment} disabled={load}>
+            <IoMdSend className="text-2xl text-[#7c4ee4] cursor-pointer" />
+          </button>
         </div>
       </div>
       <div className="w-full flex flex-col gap-5">

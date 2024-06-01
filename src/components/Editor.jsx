@@ -20,6 +20,7 @@ const Editor = () => {
   const [preview, setPreview] = useState(false);
   const [editorData,setEditorData] = useState('');
   const [publish,setPublish] = useState(false)
+  const [warning,setWarnings] = useState({title:'',category:''})
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"], // toggled buttons
@@ -54,6 +55,29 @@ const Editor = () => {
 
   const handleFormDataChange = (e)=>{
     setPost({...post,[e.target.name]:e.target.value})
+    if (e.target.name === "title" && e.target.value.length < 6) {
+      setWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        title: "Title must be at least 6 characters long.",
+      }));
+    } else {
+      setWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        title: "",
+      }));
+    }
+
+    if (e.target.name === "category" && e.target.value.length < 4) {
+      setWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        category: "Category must be at least 4 characters long.",
+      }));
+    } else {
+      setWarnings((prevWarnings) => ({
+        ...prevWarnings,
+        category: "",
+      }));
+    }
   }
 
   useEffect(()=>{
@@ -83,6 +107,7 @@ const Editor = () => {
     getImage();
     // eslint-disable-next-line
   },[file])
+  
 
   let navigate = useNavigate();
 
@@ -94,29 +119,31 @@ const Editor = () => {
   }
 
   const publishPost = async()=>{
-    try {
-      setPublish(true)
-      post.publishDate = new Date();
-      post.username = username
-      post.name = name
-      post.content = editorData
-      post.views = 0
-      let res = await API.createPost(post);
-      if(res.isSuccess){
-        toast.success(res.data.msg,{
-          autoClose:2000,
-          position:"top-center"
-        })
-        setPublish(false)
-        navigate('/myposts')
+    if(editorData){
+      try {
+        setPublish(true);
+        post.publishDate = new Date();
+        post.username = username;
+        post.name = name;
+        post.content = editorData;
+        post.views = 0;
+        let res = await API.createPost(post);
+        if (res.isSuccess) {
+          toast.success(res.data.msg, {
+            autoClose: 2000,
+            position: "top-center",
+          });
+          setPublish(false);
+          navigate("/myposts");
+        }
+      } catch (error) {
+        error.then((innerError) => {
+          toast.error(innerError.msg, {
+            autoClose: 2000,
+            position: "top-center",
+          });
+        });
       }
-    } catch (error) {
-      error.then((innerError)=>{
-        toast.error(innerError.msg,{
-          autoClose:2000,
-          position:"top-center"
-        })
-      })
     }
   }
 
@@ -137,7 +164,9 @@ const Editor = () => {
                 placeholder="Blog Title"
                 onChange={handleFormDataChange}
                 required={true}
+                minLength={6}
               />
+            {warning.title && <span className="text-red-500 text-xs font-bold">{warning.title}</span>}
             </div>
             <div className="flex flex-col gap-3 w-full">
               <span className="text-2xl font-bold text-[#7c4ee4]">
@@ -150,7 +179,9 @@ const Editor = () => {
                 placeholder="Blog Category"
                 required={true}
                 onChange={handleFormDataChange}
-              />
+                minLength={4}
+                />
+                {warning.category && <span className="text-red-500 text-xs font-bold">{warning.category}</span>}
             </div>
           </form>
           <div className="flex flex-col gap-3 w-full">
